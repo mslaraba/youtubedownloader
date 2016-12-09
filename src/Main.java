@@ -9,9 +9,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -19,16 +16,13 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 
 public class Main extends Application {
 
@@ -43,6 +37,7 @@ public class Main extends Application {
     private final String start = "--playlist-start=";
     private final String end = " --playlist-end=";
     private final String audioFormat = "--extract-audio --audio-format=mp3 ";
+    private String directoryDownload = "";
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -77,6 +72,37 @@ public class Main extends Application {
                 new Insets(0, 0, 0, 0))));
 
         HBox hBox = new HBox(link, buttonHelp);
+
+
+        TextField directory = new TextField();
+        directory.setFont(Font.font("JF Flat", FontWeight.NORMAL, 20));
+        directory.setMinWidth(585);
+        directory.getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
+        directory.setFocusTraversable(false);
+        directory.setPromptText("choose directory");
+        directory.setEditable(false);
+
+
+        Button choose = new Button(" ... ");
+        choose.getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
+        choose.setFont(Font.font("JF Flat", FontWeight.BOLD, 19));
+        choose.setBackground(new Background(new BackgroundFill(Paint.valueOf("#66666666"), CornerRadii.EMPTY,
+                new Insets(0, 0, 0, 0))));
+
+        choose.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                DirectoryChooser directoryChooser = new DirectoryChooser();
+                File selectedDirectory =
+                        directoryChooser.showDialog(primaryStage);
+
+                if (selectedDirectory != null) {
+                    directory.setText(selectedDirectory.getAbsolutePath());
+                    directoryDownload = selectedDirectory.getAbsolutePath();
+                }
+            }
+        });
+        HBox hBoxDirectory = new HBox(directory, choose);
 
 
         ToggleGroup group = new ToggleGroup();
@@ -153,10 +179,11 @@ public class Main extends Application {
         result.setEditable(false);
 
         grid.add(hBox, 0, 0);
-        grid.add(vBox, 0, 1);
-        grid.add(button, 0, 2);
-        grid.add(progress, 0, 2);
-        grid.add(result, 0, 3);
+        grid.add(hBoxDirectory, 0, 1);
+        grid.add(vBox, 0, 2);
+        grid.add(button, 0, 3);
+        grid.add(progress, 0, 3);
+        grid.add(result, 0, 4);
         grid.setVgap(10);
         grid.setHgap(10);
         primaryStage.setScene(scene);
@@ -168,24 +195,24 @@ public class Main extends Application {
             public void handle(ActionEvent event) {
                 r = new Runnable() {
                     public void run() {
-                        System.out.println("start download...");
-                        if (video.isSelected() == true) {
-                            executeCommand(youtube + link.getText(), result);
-                        } else if (playlist.isSelected() == true) {
-                            if (from.getText().equals("") && !to.equals("")) {
-                                executeCommand(youtube + "--" + end + to.getText() + " " + link.getText(), result);
-                            } else if (to.getText().equals("") && !from.equals("")) {
-                                executeCommand(youtube + start + from.getText() + " " + link.getText(), result);
-                            } else if (!to.equals("") && !from.equals("")) {
-                                executeCommand(youtube + start + from.getText()
-                                        + end + to.getText() + " " + link.getText(), result);
+                        if (!directory.getText().equals("")) {
+                            System.out.println("start download...");
+                            if (video.isSelected() == true) {
+                                executeCommand(youtube + link.getText(), directoryDownload, result);
+                            } else if (playlist.isSelected() == true) {
+                                if (from.getText().equals("") && !to.equals("")) {
+                                    executeCommand(youtube + "--" + end + to.getText() + " " + link.getText(), directoryDownload, result);
+                                } else if (to.getText().equals("") && !from.equals("")) {
+                                    executeCommand(youtube + start + from.getText() + " " + link.getText(), directoryDownload, result);
+                                } else if (!to.equals("") && !from.equals("")) {
+                                    executeCommand(youtube + start + from.getText()
+                                            + end + to.getText() + " " + link.getText(), directoryDownload, result);
+                                }
+                            } else if (audio.isSelected() == true) {
+                                executeCommand(youtube + audioFormat + link.getText(), directoryDownload, result);
                             }
-
-                            executeCommand(youtube + link.getText(), result);
-                        } else if (audio.isSelected() == true) {
-                            executeCommand(youtube + audioFormat + link.getText(), result);
+                            System.out.println("finish");
                         }
-                        System.out.println("finish");
                     }
                 };
                 thread = new Thread(r);
@@ -231,45 +258,20 @@ public class Main extends Application {
 
             }
         });
-
-        if (!(checkPackage("dpkg-query -W -f=${Status} youtube-dl").equals("install ok installed"))) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Package not found");
-            alert.setContentText("for good work with 'Youtube Downloader'\n" +
-                    "please install 'Youtube-dl'");
-            //alert.show();
-            alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
-                @Override
-                public void handle(DialogEvent event) {
-                    Runnable n = new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                openWebpage(new URL("https://yt-dl.org/"));
-                            } catch (MalformedURLException e) {
-                                System.out.println(e);
-                            }
-                        }
-                    };
-                    thread = new Thread(n);
-                    thread.start();
-                }
-            });
-        }
     }
 
     public static void main(String[] args) throws IOException {
         launch(args);
     }
 
-    private void executeCommand(String command, TextArea result) {
+    private void executeCommand(String command, String directory, TextArea result) {
 
         button.setVisible(false);
         progress.setVisible(true);
 
 
         try {
-            p = Runtime.getRuntime().exec(command);
+            p = Runtime.getRuntime().exec(command, null, new File(directory));
             //p.waitFor();
             reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String line;
@@ -288,48 +290,6 @@ public class Main extends Application {
             //p.destroy();
             button.setVisible(true);
             progress.setVisible(false);
-        }
-    }
-
-    private String checkPackage(String command) {
-
-        StringBuffer output = new StringBuffer();
-
-
-        try {
-            p = Runtime.getRuntime().exec(command);
-            p.waitFor();
-            reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                output.append(line + "\n");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return output.toString();
-
-    }
-
-    public void openWebpage(URI uri) {
-        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
-            try {
-                desktop.browse(uri);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void openWebpage(URL url) {
-        try {
-            openWebpage(url.toURI());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
         }
     }
 
