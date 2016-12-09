@@ -12,7 +12,11 @@
     -fx-border-radius: 6;
     -fx-focus-color: transparent;
     -fx-text-alignment: center;
-    -fx-alignment: center
+    -fx-alignment: cente;
+}
+
+.text-area.content{
+    -fx-text-fill: #484848;
 }
 
 .myDialog {

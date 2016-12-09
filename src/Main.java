@@ -296,8 +296,10 @@ public class Main extends Application {
     @Override
     public void stop() throws Exception {
         super.stop();
-        reader.close();
-        p.destroy();
+        if (p != null) {
+            reader.close();
+            p.destroy();
+        }
         thread.interrupt();
     }
 
