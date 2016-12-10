@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="467.0" prefWidth="600.0" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="code.Controller">
+    <top>
+        <VBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" spacing="10.0" BorderPane.alignment="CENTER_LEFT">
+            <children>
+                <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" spacing="10.0">
+                    <children>
+                        <TextArea fx:id="link" focusTraversable="false" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="570.0" promptText="your link here" stylesheets="@../style/style.css">
+                            <font>
+                                <Font name="JF Flat Regular" size="20.0" />
+                            </font>
+                        </TextArea>
+                        <Button fx:id="help" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="5.0" mnemonicParsing="false" onAction="#help" prefHeight="50.0" prefWidth="90.0" style="-fx-background-color: #00BCD4;" stylesheets="@../style/style.css" text="help" textAlignment="CENTER" textFill="#f4f4f4">
+                            <font>
+                                <Font name="JF Flat Regular" size="18.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" spacing="10.0">
+                    <children>
+                        <TextArea fx:id="directory" focusTraversable="false" maxWidth="1.7976931348623157E308" prefHeight="60.0" prefWidth="570.0" promptText="your directory" stylesheets="@../style/style.css">
+                            <font>
+                                <Font name="JF Flat Regular" size="19.0" />
+                            </font>
+                        </TextArea>
+                        <Button fx:id="chooser" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="5.0" mnemonicParsing="false" onAction="#choose" prefHeight="50.0" prefWidth="90.0" style="-fx-background-color: #00BCD4;" stylesheets="@../style/style.css" text=" ..." textAlignment="CENTER" textFill="#f4f4f4">
+                            <font>
+                                <Font name="JF Flat Regular" size="26.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </HBox>
+            </children>
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+        </VBox>
+    </top>
+    <left>
+        <VBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER_LEFT">
+            <children>
+                <fx:define>
+                    <ToggleGroup fx:id="groupRadio" />
+                </fx:define>
+                <RadioButton fx:id="video" selected="true" mnemonicParsing="false" stylesheets="@../style/style.css" text="video or full playlist" textFill="#f4f4f4">
+                    <font>
+                        <Font name="JF Flat Regular" size="15.0" />
+                    </font>
+               <toggleGroup>
+                  <ToggleGroup fx:id="groupRadio" />
+               </toggleGroup>
+                </RadioButton>
+                <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="44.0" prefWidth="323.0" spacing="10.0">
+                    <children>
+                        <RadioButton fx:id="playlist" mnemonicParsing="false" stylesheets="@../style/style.css" text="costum playlist" textFill="#f4f4f4" toggleGroup="$groupRadio">
+                            <font>
+                                <Font name="JF Flat Regular" size="15.0" />
+                            </font>
+                        </RadioButton>
+                        <TextArea fx:id="from" visible="false" prefHeight="30.0" prefWidth="65.0" promptText="from" stylesheets="@../style/style.css">
+                            <font>
+                                <Font name="JF Flat Regular" size="13.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="50.0" />
+                            </HBox.margin>
+                        </TextArea>
+                        <TextArea fx:id="to" visible="false" prefHeight="30.0" prefWidth="65.0" promptText="to" stylesheets="@../style/style.css">
+                            <font>
+                                <Font name="JF Flat Regular" size="13.0" />
+                            </font>
+                        </TextArea>
+                    </children>
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                </HBox>
+                <RadioButton fx:id="audio" mnemonicParsing="false" stylesheets="@../style/style.css" text="audio" textFill="#f4f4f4" toggleGroup="$groupRadio">
+                    <font>
+                        <Font name="JF Flat Regular" size="15.0" />
+                    </font>
+                </RadioButton>
+            </children>
+            <padding>
+                <Insets bottom="20.0" left="20.0" top="20.0" />
+            </padding>
+        </VBox>
+    </left>
+    <bottom>
+        <VBox maxWidth="1.7976931348623157E308" prefHeight="140.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button fx:id="start" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#start_download" prefHeight="30.0" prefWidth="600.0" stylesheets="@../style/style.css" text="Start" textFill="#f4f4f4">
+                    <font>
+                        <Font name="JF Flat Regular" size="25.0" />
+                    </font>
+                </Button>
+                <TextArea fx:id="result" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../style/style.css">
+                    <font>
+                        <Font name="JF Flat Regular" size="14.0" />
+                    </font>
+                </TextArea>
+            </children>
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+        </VBox>
+    </bottom>
+</BorderPane>

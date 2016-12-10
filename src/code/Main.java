@@ -1,12 +1,16 @@
-
+package code;
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
@@ -23,6 +27,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 public class Main extends Application {
 
@@ -43,15 +49,15 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         primaryStage.setTitle("Youtube Downloader");
-        primaryStage.getIcons().add(new Image("youtube.png"));
-        primaryStage.setMaxHeight(500);
+        primaryStage.getIcons().add(new Image("pictures/youtube.png"));
+        /*primaryStage.setMaxHeight(500);
         primaryStage.setMaxWidth(700);
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setPadding(new Insets(5, 5, 5, 5));
         Scene scene = new Scene(grid, 700, 500);
 
-        BackgroundImage i = new BackgroundImage(new Image("back.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT
+        BackgroundImage i = new BackgroundImage(new Image("pictures/back.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT
                 , null, null);
         grid.setBackground(new Background(i));
         grid.setPadding(new Insets(20, 20, 20, 20));
@@ -60,13 +66,13 @@ public class Main extends Application {
         TextField link = new TextField();
         link.setFont(Font.font("JF Flat", FontWeight.NORMAL, 20));
         link.setMinWidth(585);
-        link.getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
+        link.getStylesheets().add(Main.class.getResource("style/style.css").toExternalForm());
         link.setFocusTraversable(false);
         link.setPromptText(" your link here");
 
 
         Button buttonHelp = new Button("help");
-        buttonHelp.getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
+        buttonHelp.getStylesheets().add(Main.class.getResource("style/style.css").toExternalForm());
         buttonHelp.setFont(Font.font("JF Flat", FontWeight.BOLD, 19));
         buttonHelp.setBackground(new Background(new BackgroundFill(Paint.valueOf("#66666666"), CornerRadii.EMPTY,
                 new Insets(0, 0, 0, 0))));
@@ -77,14 +83,14 @@ public class Main extends Application {
         TextField directory = new TextField();
         directory.setFont(Font.font("JF Flat", FontWeight.NORMAL, 20));
         directory.setMinWidth(585);
-        directory.getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
+        directory.getStylesheets().add(Main.class.getResource("style/style.css").toExternalForm());
         directory.setFocusTraversable(false);
         directory.setPromptText("choose directory");
         directory.setEditable(false);
 
 
         Button choose = new Button(" ... ");
-        choose.getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
+        choose.getStylesheets().add(Main.class.getResource("style/style.css").toExternalForm());
         choose.setFont(Font.font("JF Flat", FontWeight.BOLD, 19));
         choose.setBackground(new Background(new BackgroundFill(Paint.valueOf("#66666666"), CornerRadii.EMPTY,
                 new Insets(0, 0, 0, 0))));
@@ -110,18 +116,18 @@ public class Main extends Application {
         RadioButton video = new RadioButton("video or full playlist");
         video.setFont(Font.font("JF Flat", FontWeight.NORMAL, 18));
         video.setToggleGroup(group);
-        video.getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
+        video.getStylesheets().add(Main.class.getResource("style/style.css").toExternalForm());
         video.setSelected(true);
         RadioButton playlist = new RadioButton("custom playlist");
         playlist.setFont(Font.font("JF Flat", FontWeight.NORMAL, 18));
         playlist.setToggleGroup(group);
-        playlist.getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
+        playlist.getStylesheets().add(Main.class.getResource("style/style.css").toExternalForm());
         TextArea from = new TextArea();
         from.setMaxHeight(10);
         from.setMaxWidth(60);
         from.setPromptText("from");
         from.setFont(Font.font("JF Flat", FontWeight.NORMAL, 16));
-        from.getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
+        from.getStylesheets().add(Main.class.getResource("style/style.css").toExternalForm());
         from.setVisible(false);
         justNumber(from);
         TextArea to = new TextArea();
@@ -130,7 +136,7 @@ public class Main extends Application {
         justNumber(to);
         to.setPromptText("to");
         to.setFont(Font.font("JF Flat", FontWeight.NORMAL, 16));
-        to.getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
+        to.getStylesheets().add(Main.class.getResource("style/style.css").toExternalForm());
         to.setVisible(false);
         HBox hBox1 = new HBox(playlist, from, to);
         hBox1.setAlignment(Pos.CENTER_LEFT);
@@ -139,7 +145,7 @@ public class Main extends Application {
         RadioButton audio = new RadioButton("audio");
         audio.setFont(Font.font("JF Flat", FontWeight.NORMAL, 18));
         audio.setToggleGroup(group);
-        audio.getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
+        audio.getStylesheets().add(Main.class.getResource("style/style.css").toExternalForm());
 
         VBox vBox = new VBox(video, hBox1, audio);
         vBox.setSpacing(10);
@@ -166,7 +172,7 @@ public class Main extends Application {
         progress.setVisible(false);
 
         button = new Button("start");
-        button.getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
+        button.getStylesheets().add(Main.class.getResource("style/style.css").toExternalForm());
         button.setFont(Font.font("JF Flat", FontWeight.BOLD, 25));
         button.setBackground(new Background(new BackgroundFill(Paint.valueOf("#66666666"), CornerRadii.EMPTY,
                 new Insets(0, 0, 0, 0))));
@@ -175,7 +181,7 @@ public class Main extends Application {
         TextArea result = new TextArea();
         result.setFont(Font.font("JF Flat", FontWeight.NORMAL, 15));
         result.setMaxHeight(60);
-        result.getStylesheets().add(Main.class.getResource("style.css").toExternalForm());
+        result.getStylesheets().add(Main.class.getResource("style/style.css").toExternalForm());
         result.setEditable(false);
 
         grid.add(hBox, 0, 0);
@@ -250,14 +256,21 @@ public class Main extends Application {
                 alert.setResizable(true);
                 DialogPane dialogPane = alert.getDialogPane();
                 dialogPane.getStylesheets().add(
-                        getClass().getResource("style.css").toExternalForm());
+                        getClass().getResource("style/style.css").toExternalForm());
                 dialogPane.getStyleClass().add("myDialog");
                 dialogPane.setMinSize(700, 180);
                 alert.setResizable(false);
                 alert.show();
 
             }
-        });
+        });*/
+
+        //Parent root = FXMLLoader.load(getClass().getResource("design.fxml"));
+        BorderPane pane = FXMLLoader.load(getClass().getResource("design.fxml"));
+        Scene scene = new Scene(pane, 700, 500);
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     public static void main(String[] args) throws IOException {
@@ -296,28 +309,9 @@ public class Main extends Application {
     @Override
     public void stop() throws Exception {
         super.stop();
-        if (p != null) {
-            reader.close();
-            p.destroy();
-        }
-        thread.interrupt();
-    }
 
-    public void justNumber(TextArea text) {
+        System.exit(1);
 
-        text.lengthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                if (newValue.intValue() > oldValue.intValue()) {
-                    char ch = text.getText().charAt(oldValue.intValue());
-                    // Check if the new character is the number or other's
-                    if (!(ch >= '0' && ch <= '9')) {
-                        // if it's not number then just setText to previous one
-                        text.setText(text.getText().substring(0, text.getText().length() - 1));
-                    }
-                }
-            }
-        });
     }
 
 }

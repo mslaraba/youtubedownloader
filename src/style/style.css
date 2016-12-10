@@ -1,9 +1,15 @@
+#pane {
+    -fx-background-image: url("../pictures/back.png");
+    -fx-text-fill: white;
+}
+
 .button {
-    -fx-border-color: #a9eeff;
+    -fx-border-color: #00e5f4;
     -fx-border-width: 1;
-    -fx-border-radius: 6;
+    -fx-border-radius: 5;
+    -fx-background-color: #00BCD4;
     -fx-text-fill: #f9f9ff;
-    -fx-alignment: center
+    -fx-alignment: center;
 }
 
 .text-area {
@@ -15,13 +21,13 @@
     -fx-alignment: cente;
 }
 
-.text-area.content{
+.text-area.content {
     -fx-text-fill: #484848;
 }
 
 .myDialog {
     -fx-background-color: #efefef;
-    -fx-background-image: url("/back.png");
+    -fx-background-image: url("/pictures/back.png");
 }
 
 .myDialog.dialog-pane > .content.label {
@@ -46,6 +52,6 @@
     -fx-font-weight: bold;
 }
 
-.radio-button{
+.radio-button {
     -fx-text-fill: #f5f5f5;
 }
